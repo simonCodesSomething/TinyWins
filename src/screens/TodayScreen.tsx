@@ -42,9 +42,22 @@ export default function TodayScreen() {
   const completions = useHabitStore(
     (state) => state.completions
   );
-  const hydrated = useHabitStore(
-    (state) => state.hydrated
+const [hydrated, setHydrated] = useState(
+  useHabitStore.persist.hasHydrated()
+);
+
+useEffect(() => {
+  const unsubscribe = useHabitStore.persist.onFinishHydration(
+    () => setHydrated(true)
   );
+
+  // Covers hydration finishing before the listener attaches.
+  if (useHabitStore.persist.hasHydrated()) {
+    setHydrated(true);
+  }
+
+  return unsubscribe;
+}, []);
   const toggleCompletion = useHabitStore(
     (state) => state.toggleCompletion
   );

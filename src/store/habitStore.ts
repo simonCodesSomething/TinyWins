@@ -181,9 +181,18 @@ export const useHabitStore = create<HabitState>()(
         completions: state.completions,
       }),
 
-      onRehydrateStorage: () => (state) => {
-        state?.setHydrated(true);
-      },
+onRehydrateStorage: () => (state, error) => {
+  if (error) {
+    console.error(
+      "[HabitStore] Hydration failed:",
+      error
+    );
+  }
+
+  useHabitStore.setState({
+    hydrated: true,
+  });
+},
     }
   )
 );

@@ -1,5 +1,7 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+
 import {
   ActivityIndicator,
   Alert,
@@ -11,7 +13,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
 import {
   getActiveHabits,
@@ -23,12 +24,31 @@ import { styles } from "../styles/settings.styles";
 
 export default function SettingsScreen() {
   const habits = useHabitStore((state) => state.habits);
-  const hydrated = useHabitStore(
-    (state) => state.hydrated
-  );
+
   const replaceHabit = useHabitStore(
     (state) => state.replaceHabit
   );
+
+  // Use Zustand's built-in persistence hydration status.
+  const [hydrated, setHydrated] = useState(
+    () => useHabitStore.persist.hasHydrated()
+  );
+
+  useEffect(() => {
+    const unsubscribe = useHabitStore.persist.onFinishHydration(
+      () => {
+        setHydrated(true);
+      }
+    );
+
+    // Handles hydration completing before
+    // the listener was registered.
+    if (useHabitStore.persist.hasHydrated()) {
+      setHydrated(true);
+    }
+
+    return unsubscribe;
+  }, []);
 
   const activeHabits = getActiveHabits(habits);
 
@@ -69,7 +89,10 @@ export default function SettingsScreen() {
       "Replace habit?",
       "This starts a fresh habit. Previous-day history will be kept, but today's completion for the old habit will be cleared.",
       [
-        { text: "Cancel", style: "cancel" },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
         {
           text: "Replace",
           onPress: () => {
@@ -84,7 +107,10 @@ export default function SettingsScreen() {
   if (!hydrated) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator color="#2563EB" />
+        <ActivityIndicator
+          size="large"
+          color="#2563EB"
+        />
       </View>
     );
   }
@@ -92,6 +118,7 @@ export default function SettingsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Settings</Text>
+
       <Text style={styles.subtitle}>
         Make TinyWins work for you.
       </Text>
@@ -105,6 +132,8 @@ export default function SettingsScreen() {
           key={habit.id}
           style={styles.habitRow}
           onPress={() => openEditor(habit)}
+          accessibilityRole="button"
+          accessibilityLabel={`Replace ${habit.name}`}
         >
           <View style={styles.habitNumber}>
             <Text style={styles.habitNumberText}>
@@ -116,6 +145,7 @@ export default function SettingsScreen() {
             <Text style={styles.habitName}>
               {habit.name}
             </Text>
+
             <Text style={styles.habitHint}>
               Tap to replace
             </Text>
@@ -137,6 +167,7 @@ export default function SettingsScreen() {
         TinyWins v1.0.0
       </Text>
 
+      {/* Replace Habit Modal */}
       <Modal
         visible={editing !== null}
         transparent
@@ -144,7 +175,9 @@ export default function SettingsScreen() {
         onRequestClose={closeEditor}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          behavior={
+            Platform.OS === "ios" ? "padding" : undefined
+          }
           style={styles.modalOverlay}
         >
           <View style={styles.modalCard}>
