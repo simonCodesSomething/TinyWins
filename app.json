@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tinywins",
+    "name": "TinyWins",
     "slug": "tinywins",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,13 +16,23 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.simonreact.tinywins",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-status-bar"
+      "expo-status-bar",
+      [
+        "expo-notifications",
+        {
+          "defaultChannel": "daily-reminders",
+          "color": "#2563EB"
+        }
+      ],
+      "@react-native-community/datetimepicker"
     ]
   }
 }

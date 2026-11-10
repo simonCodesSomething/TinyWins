@@ -3,11 +3,10 @@ import { StyleSheet } from "react-native";
 import { theme } from "../constants/theme";
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: theme.colors.background,
-  },
+container: {
+  flex: 1,
+  backgroundColor: theme.colors.background,
+},
 
   loading: {
     flex: 1,
@@ -29,13 +28,14 @@ export const styles = StyleSheet.create({
     marginBottom: 32,
   },
 
-  sectionTitle: {
-    fontSize: 12,
-    fontWeight: "700",
-    letterSpacing: 1,
-    color: theme.colors.textSecondary,
-    marginBottom: 14,
-  },
+sectionTitle: {
+  fontSize: 12,
+  fontWeight: "700",
+  letterSpacing: 1,
+  color: theme.colors.textSecondary,
+  marginTop: 20,
+  marginBottom: 14,
+},
 
   habitRow: {
     flexDirection: "row",
@@ -162,4 +162,57 @@ export const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "700",
   },
+  // Add:
+content: {
+  flexGrow: 1,
+  paddingHorizontal: 20,
+  paddingTop: 20,
+  paddingBottom: 36,
+},
+
+settingRow: {
+  flexDirection: "row",
+  alignItems: "center",
+  backgroundColor: theme.colors.surface,
+  padding: 16,
+  borderRadius: 16,
+  borderWidth: 1,
+  borderColor: theme.colors.border,
+  marginBottom: 12,
+  minHeight: 74,
+},
+
+settingIcon: {
+  width: 40,
+  height: 40,
+  borderRadius: 12,
+  backgroundColor: theme.colors.primaryLight,
+  alignItems: "center",
+  justifyContent: "center",
+  marginRight: 12,
+},
+
+settingText: {
+  flex: 1,
+  paddingRight: 8,
+},
+
+settingName: {
+  fontSize: 15,
+  fontWeight: "600",
+  color: theme.colors.text,
+},
+
+settingDescription: {
+  fontSize: 12,
+  color: theme.colors.textSecondary,
+  marginTop: 4,
+  lineHeight: 17,
+},
+
+resetText: {
+  fontSize: 15,
+  fontWeight: "700",
+  color: "#DC2626",
+},
 });
